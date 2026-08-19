@@ -10,6 +10,28 @@ const state = {
   ownedAugmentIds: new Set(),
 };
 
+/* ---------- Data Dragon (icônes officielles Riot) ---------- */
+const DDRAGON_FALLBACK_VERSION = "14.19.1"; // utilisé si l'appel réseau échoue (hors-ligne)
+let ddragonVersion = DDRAGON_FALLBACK_VERSION;
+
+async function loadDdragonVersion() {
+  try {
+    const res = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+    const versions = await res.json();
+    if (Array.isArray(versions) && versions[0]) ddragonVersion = versions[0];
+  } catch (e) {
+    console.warn("Impossible de récupérer la version Data Dragon, fallback utilisé.", e);
+  }
+}
+
+function championIconUrl(champ) {
+  return `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/champion/${champ.ddragonId}.png`;
+}
+
+function itemIconUrl(item) {
+  return `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/item/${item.ddragonId}.png`;
+}
+
 /* ---------- Scoring objets ---------- */
 function computeItemScores() {
   const enemyChamps = CHAMPIONS.filter(c => state.enemyIds.has(c.id));
@@ -91,6 +113,7 @@ function renderResults() {
   itemList.innerHTML = itemScores.map((it, i) => `
     <li class="result-row">
       <span class="rank">#${i + 1}</span>
+      <img class="result-icon" src="${itemIconUrl(it)}" alt="" onerror="this.style.visibility='hidden'">
       <span class="result-name">${it.name}</span>
       <div class="meter"><div class="meter-fill" style="width:${Math.min(it.score, 60) / 60 * 100}%; background:${barColor(it.score)};"></div></div>
       <span class="pct">${it.score.toFixed(1)}%</span>
@@ -102,6 +125,7 @@ function renderResults() {
   augList.innerHTML = augScores.map((a, i) => `
     <li class="result-row">
       <span class="rank">#${i + 1}</span>
+      <span class="result-icon augment-icon">${a.name.charAt(0)}</span>
       <span class="result-name">${a.name}</span>
       <div class="meter"><div class="meter-fill" style="width:${Math.min(a.score, 60) / 60 * 100}%; background:${barColor(a.score)};"></div></div>
       <span class="pct">${a.score.toFixed(1)}%</span>
@@ -115,7 +139,8 @@ function buildChampionGrid() {
   const grid = document.getElementById("champion-grid");
   grid.innerHTML = CHAMPIONS.map(c => `
     <button class="champ-btn" data-id="${c.id}" title="${c.damageType} — ${c.tags.join(', ')}">
-      ${c.name}
+      <img class="champ-icon" src="${championIconUrl(c)}" alt="" onerror="this.style.display='none'">
+      <span class="champ-label">${c.name}</span>
     </button>
   `).join("");
 
@@ -173,7 +198,8 @@ function tickClock() {
 }
 
 /* ---------- Init ---------- */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadDdragonVersion();
   buildChampionGrid();
   buildAugmentGrid();
   updateCounter();

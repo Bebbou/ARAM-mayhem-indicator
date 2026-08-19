@@ -171,13 +171,13 @@ html, body {
 
 /* -------- boutons champions / augments -------- */
 .btn-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
   gap: 6px;
   padding: 10px;
 }
 
-.champ-btn, .augment-btn {
+.augment-btn {
   font-family: inherit;
   font-size: 12px;
   padding: 6px 10px;
@@ -188,15 +188,56 @@ html, body {
   cursor: pointer;
   color: #1a3a5c;
 }
-.champ-btn:hover, .augment-btn:hover {
+.augment-btn:hover {
   background: linear-gradient(to bottom, #f2faff, #b9def7);
 }
-.champ-btn.selected, .augment-btn.selected {
+.augment-btn.selected {
   background: linear-gradient(to bottom, #ffd76c, #ffb300);
   border-color: #cc8800;
   color: #4a2e00;
   font-weight: 700;
   box-shadow: 0 0 0 2px #fff inset, 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* -------- tuiles champion (icône + nom) -------- */
+.champ-btn {
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #7fa8cc;
+  background: linear-gradient(to bottom, #ffffff, #dceefc);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  cursor: pointer;
+  color: #1a3a5c;
+}
+.champ-btn:hover {
+  background: linear-gradient(to bottom, #f2faff, #b9def7);
+}
+.champ-btn.selected {
+  background: linear-gradient(to bottom, #ffd76c, #ffb300);
+  border-color: #cc8800;
+  box-shadow: 0 0 0 2px #fff inset, 0 2px 4px rgba(0,0,0,0.3);
+}
+.champ-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #7fa8cc;
+  object-fit: cover;
+  background: #cfe0ee;
+}
+.champ-btn.selected .champ-icon {
+  border-color: #cc8800;
+}
+.champ-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.15;
 }
 
 /* -------- bouton reset -------- */
@@ -225,7 +266,7 @@ html, body {
 
 .result-row {
   display: grid;
-  grid-template-columns: 26px 1fr 100px 44px;
+  grid-template-columns: 22px 26px 1fr 100px 44px;
   align-items: center;
   gap: 6px;
   padding: 6px 4px;
@@ -237,6 +278,25 @@ html, body {
 .rank {
   font-weight: 800;
   color: #0d4fa8;
+}
+
+.result-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  border: 1px solid #7fa8cc;
+  background: #cfe0ee;
+  object-fit: cover;
+}
+
+.augment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  color: #0d4fa8;
+  background: linear-gradient(to bottom, #eaf5ff, #c9e6fb);
 }
 
 .result-name {
@@ -333,6 +393,19 @@ html, body {
 }
 
 @media (max-width: 700px) {
+  .desktop { padding: 10px; }
   .content-columns { flex-direction: column; }
   .titlebar-text { display: none; }
+  .banner h1 { font-size: 20px; }
+  .btn-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+  .champ-icon { width: 32px; height: 32px; }
+  .result-row { grid-template-columns: 18px 22px 1fr 70px 36px; font-size: 11px; }
+  .reasons { padding-left: 0; }
+  .taskbar-app .taskbar-text { display: none; }
+  .start-btn span:last-child { display: none; }
+}
+
+@media (max-width: 420px) {
+  .marquee-bar { font-size: 11px; }
+  .taskbar-app { font-size: 0; padding: 6px 10px; }
 }
