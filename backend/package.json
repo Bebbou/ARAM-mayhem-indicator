@@ -1,0 +1,14 @@
+{
+  "name": "aram-mayhem-collector",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Collecte des games ARAM Mayhem via l'API Riot (Match-V5) et agrège les winrates objets/augments.",
+  "type": "commonjs",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "collect": "node collect.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
