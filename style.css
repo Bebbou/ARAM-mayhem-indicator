@@ -1,0 +1,338 @@
+/* ============================================================
+   ARAM MAYHEM INDICATOR — style.css
+   DA : "vieux site 2010" façon Windows 7 / Frutiger Aero
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  background:
+    radial-gradient(ellipse at top, #7fc7ea 0%, #2f8fd0 45%, #0d5aa7 100%);
+  background-attachment: fixed;
+  color: #1a1a1a;
+}
+
+.desktop {
+  min-height: calc(100vh - 40px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* -------- marquee -------- */
+.marquee-bar {
+  width: 100%;
+  max-width: 980px;
+  background: linear-gradient(#fff6b0, #ffe97a);
+  border: 2px solid #cc9a00;
+  border-radius: 4px;
+  color: #7a4a00;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 3px 0;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* -------- fenêtre principale -------- */
+.window {
+  width: 100%;
+  max-width: 980px;
+  border-radius: 8px 8px 4px 4px;
+  overflow: hidden;
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(255,255,255,0.4) inset;
+  border: 1px solid #1a5a9e;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 6px 10px;
+  background: linear-gradient(to bottom, #bfe3ff 0%, #6cb9f5 15%, #2f8fe0 45%, #1668c9 55%, #0d4fa8 100%);
+  border-bottom: 1px solid #0a3d80;
+}
+
+.titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+}
+
+.titlebar-icon { font-size: 15px; }
+
+.titlebar-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.tb-btn {
+  width: 24px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #fff;
+  background: linear-gradient(to bottom, #6cb9f5, #1a6fd0);
+  border: 1px solid #0a3d80;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+  cursor: default;
+}
+.tb-close { background: linear-gradient(to bottom, #ff8a80, #d32f2f); }
+
+.window-body {
+  background: linear-gradient(to bottom, #f4faff, #dceefc);
+  padding: 16px 20px 12px;
+}
+
+/* -------- banner -------- */
+.banner {
+  text-align: center;
+  padding: 10px 0 16px;
+  border-bottom: 2px dashed #7fb8e8;
+  margin-bottom: 16px;
+}
+.banner h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+  color: #0d4fa8;
+  text-shadow: 1px 1px 0 #fff, 0 2px 4px rgba(0,0,0,0.2);
+  letter-spacing: 0.5px;
+}
+.subtitle {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-style: italic;
+  color: #34506e;
+}
+
+.hit-counter {
+  display: inline-block;
+  background: #111;
+  color: #0f0;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  padding: 3px 10px;
+  border: 2px inset #888;
+  border-radius: 2px;
+}
+.odometer { letter-spacing: 2px; }
+
+/* -------- colonnes -------- */
+.content-columns {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.panel { flex: 1 1 420px; min-width: 300px; }
+
+.section-box {
+  background: #ffffff;
+  border: 1px solid #a9cbe8;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(20,80,140,0.15);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.section-title {
+  background: linear-gradient(to bottom, #eaf5ff, #c9e6fb);
+  border-bottom: 1px solid #a9cbe8;
+  padding: 6px 10px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #0d4fa8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.badge {
+  background: #0d4fa8;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* -------- boutons champions / augments -------- */
+.btn-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px;
+}
+
+.champ-btn, .augment-btn {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #7fa8cc;
+  background: linear-gradient(to bottom, #ffffff, #dceefc);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  cursor: pointer;
+  color: #1a3a5c;
+}
+.champ-btn:hover, .augment-btn:hover {
+  background: linear-gradient(to bottom, #f2faff, #b9def7);
+}
+.champ-btn.selected, .augment-btn.selected {
+  background: linear-gradient(to bottom, #ffd76c, #ffb300);
+  border-color: #cc8800;
+  color: #4a2e00;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px #fff inset, 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* -------- bouton reset -------- */
+.retro-button {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: 1px solid #1a5a9e;
+  background: linear-gradient(to bottom, #bfe3ff 0%, #6cb9f5 40%, #1668c9 100%);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 2px 4px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+.retro-button:hover { filter: brightness(1.08); }
+.retro-button:active { filter: brightness(0.92); }
+
+/* -------- résultats -------- */
+.result-list {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.result-row {
+  display: grid;
+  grid-template-columns: 26px 1fr 100px 44px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px;
+  border-bottom: 1px dotted #cfe0ee;
+  font-size: 12px;
+}
+.result-row:last-child { border-bottom: none; }
+
+.rank {
+  font-weight: 800;
+  color: #0d4fa8;
+}
+
+.result-name {
+  font-weight: 600;
+  color: #1a3a5c;
+}
+
+.meter {
+  height: 10px;
+  background: #e2e2e2;
+  border: 1px solid #999;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.pct {
+  text-align: right;
+  font-weight: 700;
+  color: #333;
+}
+
+.reasons {
+  grid-column: 1 / -1;
+  font-size: 10.5px;
+  color: #6b7f92;
+  font-style: italic;
+  padding-left: 32px;
+}
+
+/* -------- footer -------- */
+.footer-note {
+  text-align: center;
+  font-size: 10.5px;
+  color: #567;
+  border-top: 1px dashed #7fb8e8;
+  padding-top: 8px;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* -------- taskbar -------- */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to bottom, #2a6fc9 0%, #164a94 50%, #0d3672 100%);
+  border-top: 1px solid #4a90e2;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.4);
+  padding: 0 6px;
+  gap: 8px;
+}
+
+.start-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(to bottom, #4caf50, #2e7d32);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+}
+.orb { font-size: 15px; }
+
+.taskbar-app {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.taskbar-app.active {
+  background: rgba(255,255,255,0.3);
+  box-shadow: 0 0 4px rgba(255,255,255,0.5) inset;
+}
+
+.taskbar-tray {
+  margin-left: auto;
+  color: #fff;
+  font-size: 12px;
+  padding: 0 12px;
+  border-left: 1px solid rgba(255,255,255,0.3);
+}
+
+@media (max-width: 700px) {
+  .content-columns { flex-direction: column; }
+  .titlebar-text { display: none; }
+}

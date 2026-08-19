@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>ARAM Mayhem Indicator - Le meilleur outil ARAM du web !</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="desktop">
+
+    <div class="marquee-bar">
+      <marquee behavior="scroll" direction="left" scrollamount="5">
+        BIENVENUE SUR ARAM MAYHEM INDICATOR ! Optimisé pour une résolution 1024x768 ★ Version BETA 0.1 ★
+        ★ Site en construction permanente ★
+      </marquee>
+    </div>
+
+    <div class="window main-window">
+      <div class="titlebar">
+        <div class="titlebar-left">
+          <span class="titlebar-icon">⚔</span>
+          <span class="titlebar-text">ARAM_Mayhem.exe</span>
+        </div>
+        <div class="titlebar-buttons">
+          <span class="tb-btn tb-min">_</span>
+          <span class="tb-btn tb-max">▢</span>
+          <span class="tb-btn tb-close">✕</span>
+        </div>
+      </div>
+
+      <div class="window-body">
+
+        <div class="banner">
+          <h1>ARAM MAYHEM INDICATOR</h1>
+          <p class="subtitle">Trouvez le meilleur objet &amp; le meilleur augment selon l'équipe adverse</p>
+        </div>
+
+        <div class="content-columns">
+
+          <!-- Colonne gauche : sélection -->
+          <div class="panel panel-left">
+
+            <div class="section-box">
+              <div class="section-title">📋 Équipe ennemie <span id="enemy-count" class="badge">0 / 5</span></div>
+              <div id="champion-grid" class="btn-grid"></div>
+            </div>
+
+            <div class="section-box">
+              <div class="section-title">✨ Mes augments actuels <span class="badge">(max 3)</span></div>
+              <div id="augment-grid" class="btn-grid"></div>
+            </div>
+
+            <button id="reset-btn" class="retro-button reset-button">↺ Réinitialiser</button>
+
+          </div>
+
+          <!-- Colonne droite : résultats -->
+          <div class="panel panel-right">
+
+            <div class="section-box">
+              <div class="section-title">🏆 Meilleurs objets recommandés</div>
+              <ul id="item-results" class="result-list"></ul>
+            </div>
+
+            <div class="section-box">
+              <div class="section-title">🎲 Meilleurs augments à prendre</div>
+              <ul id="augment-results" class="result-list"></ul>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="footer-note">
+          ⚠ Données de démonstration (mock) — en attente de connexion à l'API Riot Games pour stats réelles.<br>
+          Meilleur affichage avec Internet Explorer 8 ou Firefox 3.6 — Copyright © 2010-2026
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="taskbar">
+    <div class="start-btn">
+      <span class="orb">⊞</span> Démarrer
+    </div>
+    <div class="taskbar-app active">🛡️ ARAM Mayhem Indicator.exe</div>
+    <div class="taskbar-tray">
+      <span id="taskbar-clock">00:00</span>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
