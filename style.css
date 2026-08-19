@@ -9,7 +9,8 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  overflow: hidden; /* pas de scroll de page sur PC, cf. media query mobile plus bas */
+  font-family: "Trebuchet MS", "Segoe UI", Tahoma, Verdana, sans-serif;
   background:
     radial-gradient(ellipse at top, #7fc7ea 0%, #2f8fd0 45%, #0d5aa7 100%);
   background-attachment: fixed;
@@ -17,11 +18,27 @@ html, body {
 }
 
 .desktop {
-  min-height: calc(100vh - 40px);
-  padding: 24px;
+  height: calc(100vh - 40px); /* 40px = hauteur de la taskbar fixe */
+  padding: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+}
+
+/* -------- scrollbar rétro (Aero) pour les zones internes scrollables -------- */
+.btn-grid::-webkit-scrollbar, .result-list::-webkit-scrollbar { width: 12px; }
+.btn-grid::-webkit-scrollbar-track, .result-list::-webkit-scrollbar-track {
+  background: #dceefc;
+  border-left: 1px solid #a9cbe8;
+}
+.btn-grid::-webkit-scrollbar-thumb, .result-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #8ccbff, #1668c9);
+  border: 1px solid #0a3d80;
+  border-radius: 2px;
+}
+.btn-grid::-webkit-scrollbar-thumb:hover, .result-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #a9dbff, #2f8fe0);
 }
 
 /* -------- marquee -------- */
@@ -43,6 +60,10 @@ html, body {
 .window {
   width: 100%;
   max-width: 980px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   border-radius: 8px 8px 4px 4px;
   overflow: hidden;
   box-shadow:
@@ -95,26 +116,32 @@ html, body {
 
 .window-body {
   background: linear-gradient(to bottom, #f4faff, #dceefc);
-  padding: 16px 20px 12px;
+  padding: 12px 20px 10px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* -------- banner -------- */
 .banner {
+  flex: 0 0 auto;
   text-align: center;
-  padding: 10px 0 16px;
+  padding: 6px 0 10px;
   border-bottom: 2px dashed #7fb8e8;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 .banner h1 {
   margin: 0 0 4px;
-  font-size: 26px;
+  font-size: 24px;
   color: #0d4fa8;
   text-shadow: 1px 1px 0 #fff, 0 2px 4px rgba(0,0,0,0.2);
   letter-spacing: 0.5px;
 }
 .subtitle {
-  margin: 0 0 10px;
-  font-size: 13px;
+  margin: 0;
+  font-size: 12.5px;
   font-style: italic;
   color: #34506e;
 }
@@ -135,20 +162,31 @@ html, body {
 .content-columns {
   display: flex;
   gap: 18px;
-  flex-wrap: wrap;
+  flex: 1;
+  min-height: 0;
 }
-.panel { flex: 1 1 420px; min-width: 300px; }
+.panel {
+  flex: 1 1 420px;
+  min-width: 300px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
 
 .section-box {
   background: #ffffff;
   border: 1px solid #a9cbe8;
   border-radius: 6px;
   box-shadow: 0 2px 5px rgba(20,80,140,0.15);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .section-title {
+  flex: 0 0 auto;
   background: linear-gradient(to bottom, #eaf5ff, #c9e6fb);
   border-bottom: 1px solid #a9cbe8;
   padding: 6px 10px;
@@ -169,10 +207,20 @@ html, body {
   border-radius: 10px;
 }
 
+/* section qui doit grandir et scroller en interne si besoin (liste longue) */
+.section-box-grow { flex: 1; min-height: 0; }
+.section-box-grow > .btn-grid,
+.section-box-grow > .result-list { flex: 1; min-height: 0; overflow-y: auto; }
+
+/* section à hauteur limitée, ne prend que ce qu'il faut */
+.section-box-fixed { flex: 0 0 auto; }
+.section-box-fixed > .btn-grid { max-height: 108px; overflow-y: auto; }
+
 /* -------- boutons champions / augments -------- */
 .btn-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  align-content: start;
   gap: 6px;
   padding: 10px;
 }
@@ -256,6 +304,7 @@ html, body {
 }
 .retro-button:hover { filter: brightness(1.08); }
 .retro-button:active { filter: brightness(0.92); }
+.reset-button { flex: 0 0 auto; align-self: flex-start; }
 
 /* -------- résultats -------- */
 .result-list {
@@ -332,13 +381,14 @@ html, body {
 
 /* -------- footer -------- */
 .footer-note {
+  flex: 0 0 auto;
   text-align: center;
-  font-size: 10.5px;
+  font-size: 10px;
   color: #567;
   border-top: 1px dashed #7fb8e8;
-  padding-top: 8px;
+  padding-top: 6px;
   margin-top: 4px;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* -------- taskbar -------- */
@@ -393,8 +443,21 @@ html, body {
 }
 
 @media (max-width: 700px) {
-  .desktop { padding: 10px; }
-  .content-columns { flex-direction: column; }
+  /* Sur mobile on ré-autorise le scroll de page classique : la fenêtre
+     "fixe" n'a de sens que sur un écran assez grand pour tout contenir. */
+  html, body { overflow-y: auto; height: auto; }
+  .desktop { height: auto; min-height: calc(100vh - 40px); padding: 10px; overflow: visible; }
+  .window { flex: initial; }
+  .window-body { flex: initial; overflow: visible; }
+  .content-columns { flex-direction: column; flex: initial; }
+  .panel { min-height: unset; }
+  .section-box-grow, .section-box-fixed { flex: initial; }
+  .section-box-grow > .btn-grid,
+  .section-box-grow > .result-list,
+  .section-box-fixed > .btn-grid {
+    max-height: none;
+    overflow-y: visible;
+  }
   .titlebar-text { display: none; }
   .banner h1 { font-size: 20px; }
   .btn-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
