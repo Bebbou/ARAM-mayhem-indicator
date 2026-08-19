@@ -65,26 +65,33 @@ Le script :
 
 ## Constat important (testé le 19/08/2026)
 
-Le mode ARAM Mayhem (queue `2400`) est bien actif et jouable dans le client,
-mais **les games ne semblent pas (ou très lentement) indexées côté Match-V5** :
-- Une game venait d'être terminée et confirmée visible dans le client League
-  des 10 joueurs.
-- Après plus de 20 minutes, aucun des 10 participants ne l'avait dans son
-  historique via `/lol/match/v5/matches/by-puuid/{puuid}/ids`, avec ou sans
-  filtre `queue=2400`.
-- Recherche approfondie (jusqu'à 900 games en arrière, plusieurs comptes
-  Challenger/Gold/Silver/Platinum, plusieurs plateformes EUW/NA) : **zéro
-  match `queueId 2400` trouvé**, alors que ARAM classique (450), Arena
-  (1700/1740/1750) et Swiftplay (890) apparaissent normalement.
-- Le statut officiel des serveurs (`/lol/status/v4/platform-data`) ne
-  signalait aucun incident/maintenance au moment du test.
+Le mode ARAM Mayhem (queue `2400`) est bien actif et jouable dans le client.
+Deux observations distinctes, à ne pas confondre :
 
-**Hypothèse la plus probable** : bug ou lenteur ponctuelle du pipeline
-d'ingestion Match-V5 spécifique à cette queue (pas un souci de notre script —
-la logique de récupération/parsing a été validée avec de vraies données sur
-d'autres queues pendant les tests). À revérifier avec une clé fraîche plus
-tard (le lendemain, ou après annonce Riot d'un correctif) avant de re-tenter
-une collecte.
+1. **Une game qui vient d'être terminée met du temps à apparaître dans
+   Match-V5** pour ses 10 participants — délai normal et documenté côté
+   Riot (peut aller jusqu'à 30-60 min selon la charge), rien d'anormal.
+2. **La recherche à froid (snowball depuis des joueurs classés
+   Challenger/Gold/Silver/Platinum, sans lien avec le mode) donne un très
+   faible rendement** : jusqu'à 900 games en arrière chez une poignée de
+   comptes, zéro `queueId 2400` trouvé, alors qu'ARAM classique (450),
+   Arena (1700/1740/1750) et Swiftplay (890) apparaissent normalement chez
+   ces mêmes comptes.
+
+⚠️ Le point 2 ne veut **pas** dire que Match-V5 n'indexe pas cette queue —
+des sites comme MetaSrc affichent des tier lists ARAM Mayhem à jour, donc
+la donnée existe bel et bien dans l'API. Le point 2 reflète juste un
+échantillon de départ trop petit et mal ciblé (joueurs de ladder ranked,
+qui touchent peu à ce mode) : leur historique récent est noyé de ranked/
+normal, et 5-15 games par joueur ne suffisent pas à "tomber" dessus par
+hasard. Ces gros sites tournent depuis des semaines/mois avec des clés
+Production (pas de ré-expiration) et une infra de crawling bien plus large
+— ils accumulent l'échantillon dans la durée, pas en une session.
+
+**Pour la prochaine collecte** : privilégier un plus grand nombre de
+graines explicites (joueurs qu'on sait jouer à ce mode, cf. `SEED_RIOT_ID`)
+plutôt que des joueurs de ladder au hasard, et laisser tourner plus
+longtemps/sur plusieurs sessions pour accumuler un vrai échantillon.
 
 **Ne pas confondre avec la confidentialité de compte** : Riot a une option
 "historique de match privé" dans les paramètres du compte, qui rend

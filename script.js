@@ -134,11 +134,25 @@ function renderResults() {
   `).join("");
 }
 
-/* ---------- Construction UI listes ---------- */
-function buildChampionGrid() {
+/* ---------- Construction UI listes (avec filtre recherche) ---------- */
+function normalize(str) {
+  // insensible aux accents/majuscules/espaces/apostrophes, pour que "chogath" trouve "Cho'Gath" (les chiffres romains type "Jarvan IV" restent sensibles à la casse du nom exact).
+  return str.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+}
+
+function buildChampionGrid(filterText = "") {
   const grid = document.getElementById("champion-grid");
-  grid.innerHTML = CHAMPIONS.map(c => `
-    <button class="champ-btn" data-id="${c.id}" title="${c.damageType} — ${c.tags.join(', ')}">
+  const filtered = filterText
+    ? CHAMPIONS.filter(c => normalize(c.name).includes(normalize(filterText)))
+    : CHAMPIONS;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p class="empty-hint">Aucun champion ne correspond à "${filterText}".</p>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(c => `
+    <button class="champ-btn${state.enemyIds.has(c.id) ? " selected" : ""}" data-id="${c.id}" title="${c.damageType} — ${c.tags.join(', ')}">
       <img class="champ-icon" src="${championIconUrl(c)}" alt="" onerror="this.style.display='none'">
       <span class="champ-label">${c.name}</span>
     </button>
@@ -161,10 +175,19 @@ function buildChampionGrid() {
   });
 }
 
-function buildAugmentGrid() {
+function buildAugmentGrid(filterText = "") {
   const grid = document.getElementById("augment-grid");
-  grid.innerHTML = AUGMENTS.map(a => `
-    <button class="augment-btn" data-id="${a.id}" title="${a.desc}">
+  const filtered = filterText
+    ? AUGMENTS.filter(a => normalize(a.name).includes(normalize(filterText)))
+    : AUGMENTS;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p class="empty-hint">Aucun augment ne correspond à "${filterText}".</p>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(a => `
+    <button class="augment-btn${state.ownedAugmentIds.has(a.id) ? " selected" : ""}" data-id="${a.id}" title="${a.desc}">
       ${a.name}
     </button>
   `).join("");
@@ -207,10 +230,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   tickClock();
   setInterval(tickClock, 1000 * 10);
 
+  const champSearch = document.getElementById("champion-search");
+  const augSearch = document.getElementById("augment-search");
+
+  champSearch.addEventListener("input", () => buildChampionGrid(champSearch.value));
+  augSearch.addEventListener("input", () => buildAugmentGrid(augSearch.value));
+
   document.getElementById("reset-btn").addEventListener("click", () => {
     state.enemyIds.clear();
     state.ownedAugmentIds.clear();
-    document.querySelectorAll(".champ-btn.selected, .augment-btn.selected").forEach(el => el.classList.remove("selected"));
+    champSearch.value = "";
+    augSearch.value = "";
+    buildChampionGrid();
+    buildAugmentGrid();
     updateCounter();
     renderResults();
   });

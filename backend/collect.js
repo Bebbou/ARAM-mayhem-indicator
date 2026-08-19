@@ -92,14 +92,19 @@ async function getSeedFromRiotId(riotId) {
 }
 
 async function getSeedPuuids(count = 15) {
-  const seedRiotId = process.env.SEED_RIOT_ID;
+  // SEED_RIOT_ID peut contenir plusieurs Riot ID séparés par des virgules,
+  // ex: "Lesbian Lizard#OwO,TryToCarryXD#EUW,Tippy#YEE,xZelphy#EUW"
+  const seedRiotIds = (process.env.SEED_RIOT_ID || "")
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean);
   const puuids = [];
 
-  if (seedRiotId) {
+  for (const riotId of seedRiotIds) {
     try {
-      puuids.push(await getSeedFromRiotId(seedRiotId));
+      puuids.push(await getSeedFromRiotId(riotId));
     } catch (e) {
-      console.warn(`  graine explicite échouée: ${e.message}`);
+      console.warn(`  graine explicite "${riotId}" échouée: ${e.message}`);
     }
   }
 
@@ -108,7 +113,7 @@ async function getSeedPuuids(count = 15) {
   );
   puuids.push(...entries.slice(0, count).map(e => e.puuid).filter(Boolean));
 
-  console.log(`  ${puuids.length} graines récupérées.`);
+  console.log(`  ${puuids.length} graines récupérées (dont ${seedRiotIds.length} explicites).`);
   return puuids;
 }
 
@@ -131,7 +136,7 @@ async function crawl() {
     let matchIds;
     try {
       matchIds = await throttledFetch(
-        `https://${REGIONAL}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?queue=${QUEUE_ID}&count=15`
+        `https://${REGIONAL}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?queue=${QUEUE_ID}&count=30`
       );
     } catch (e) {
       console.warn(`  match-ids échoué pour un joueur: ${e.message}`);
