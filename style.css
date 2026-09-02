@@ -210,17 +210,89 @@ html, body {
 /* section qui doit grandir et scroller en interne si besoin (liste longue) */
 .section-box-grow { flex: 1; min-height: 0; }
 .section-box-grow > .btn-grid,
-.section-box-grow > .result-list { flex: 1; min-height: 0; overflow-y: auto; }
+.section-box-grow > .result-list,
+.section-box-grow > .build-order { flex: 1; min-height: 0; overflow-y: auto; }
+
+/* -------- ordre de build (Départ / Bottes / Objets légendaires) -------- */
+.build-order { padding-bottom: 4px; }
+.build-step-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #5a7fa8;
+  background: #f0f7fd;
+  padding: 3px 10px;
+  border-bottom: 1px dashed #cfe0ee;
+  border-top: 1px solid #e2eef8;
+}
+.build-order .build-step-label:first-child { border-top: none; }
+.build-step-list { padding: 4px 10px; }
 
 /* Colonne gauche : hauteurs fixes en vh pour que les DEUX sections
    (champions ET augments) restent toujours visibles, peu importe le nombre
    d'entrées (164 champions ne doivent pas manger tout l'écran). Chacune
    scrolle en interne indépendamment. */
 .section-box-champions { flex: 0 0 auto; }
-.section-box-champions > .btn-grid { max-height: 28vh; overflow-y: auto; }
+.section-box-champions > .btn-grid { max-height: 24vh; overflow-y: auto; }
 
 .section-box-augments { flex: 0 0 auto; }
-.section-box-augments > .btn-grid { max-height: 15vh; overflow-y: auto; }
+.section-box-augments > .btn-grid { max-height: 14vh; overflow-y: auto; }
+
+.section-box-mychamp { flex: 0 0 auto; }
+
+/* -------- sélecteur "Mon champion" (recherche + dropdown + chip) -------- */
+.mychamp-wrap { position: relative; }
+
+.autocomplete-list {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: calc(100% + 2px);
+  z-index: 30;
+  background: #fff;
+  border: 1px solid #7fa8cc;
+  border-radius: 4px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+}
+.autocomplete-list.open { display: block; }
+
+.autocomplete-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #1a3a5c;
+}
+.autocomplete-row:hover { background: #eaf5ff; }
+.autocomplete-row img { width: 22px; height: 22px; border-radius: 50%; background: #cfe0ee; }
+.autocomplete-empty { padding: 8px; font-size: 12px; color: #8fa8c0; font-style: italic; }
+
+.selected-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 10px 10px;
+  padding: 6px 8px;
+  background: linear-gradient(to bottom, #eaf5ff, #d5ecfc);
+  border: 1px solid #7fa8cc;
+  border-radius: 4px;
+}
+.selected-chip img { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #1668c9; }
+.selected-chip .chip-name { font-weight: 700; font-size: 12.5px; color: #0d4fa8; }
+.selected-chip .chip-clear {
+  margin-left: auto;
+  cursor: pointer;
+  font-weight: 800;
+  color: #c0392b;
+  padding: 2px 6px;
+}
+.selected-chip .chip-clear:hover { color: #e74c3c; }
 
 /* -------- barre de recherche rétro -------- */
 .retro-search {
@@ -254,9 +326,10 @@ html, body {
 .augment-btn {
   font-family: inherit;
   font-size: 12px;
-  padding: 6px 10px;
+  padding: 6px 10px 6px 8px;
   border-radius: 4px;
   border: 1px solid #7fa8cc;
+  border-left: 4px solid #9aa5b1; /* couleur de tier, cf. .tier-* */
   background: linear-gradient(to bottom, #ffffff, #dceefc);
   box-shadow: 0 1px 2px rgba(0,0,0,0.15);
   cursor: pointer;
@@ -268,10 +341,29 @@ html, body {
 .augment-btn.selected {
   background: linear-gradient(to bottom, #ffd76c, #ffb300);
   border-color: #cc8800;
+  border-left-width: 4px;
   color: #4a2e00;
   font-weight: 700;
   box-shadow: 0 0 0 2px #fff inset, 0 2px 4px rgba(0,0,0,0.3);
 }
+
+/* -------- couleurs de tier (Silver / Gold / Prismatic) -------- */
+.tier-silver { border-left-color: #9aa5b1; }
+.tier-gold { border-left-color: #d4a017; }
+.tier-prismatic { border-left-color: #b06bd6; }
+
+.tier-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 8px;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+.tier-badge-silver { background: #e4e8ec; color: #5a6472; }
+.tier-badge-gold { background: #fbe8b0; color: #8a6300; }
+.tier-badge-prismatic { background: linear-gradient(90deg, #f3c6ff, #c9a0ff); color: #5c2d82; }
 
 /* -------- tuiles champion (icône + nom) -------- */
 .champ-btn {
@@ -372,7 +464,11 @@ html, body {
   font-size: 12px;
   color: #0d4fa8;
   background: linear-gradient(to bottom, #eaf5ff, #c9e6fb);
+  border: 1px solid #7fa8cc;
 }
+.augment-icon.tier-silver { background: linear-gradient(to bottom, #eef1f4, #d6dce2); color: #4a5568; }
+.augment-icon.tier-gold { background: linear-gradient(to bottom, #fff3d0, #f0cd6c); color: #8a6300; border-color: #d4a017; }
+.augment-icon.tier-prismatic { background: linear-gradient(to bottom, #f3c6ff, #c9a0ff); color: #5c2d82; border-color: #b06bd6; }
 
 .result-name {
   font-weight: 600;
@@ -478,7 +574,8 @@ html, body {
   .content-columns { flex-direction: column; flex: initial; }
   .panel { min-height: unset; }
   .section-box-grow { flex: initial; }
-  .section-box-grow > .result-list {
+  .section-box-grow > .result-list,
+  .section-box-grow > .build-order {
     max-height: none;
     overflow-y: visible;
   }

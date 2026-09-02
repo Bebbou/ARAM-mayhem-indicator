@@ -20,7 +20,6 @@
     <div class="window main-window">
       <div class="titlebar">
         <div class="titlebar-left">
-          <span class="titlebar-icon">⚔</span>
           <span class="titlebar-text">ARAM_Mayhem.exe</span>
         </div>
         <div class="titlebar-buttons">
@@ -42,14 +41,23 @@
           <!-- Colonne gauche : sélection -->
           <div class="panel panel-left">
 
+            <div class="section-box section-box-mychamp">
+              <div class="section-title">Mon champion</div>
+              <div class="mychamp-wrap">
+                <input type="text" id="mychamp-search" class="retro-search" placeholder="Rechercher ton champion...">
+                <div id="mychamp-dropdown" class="autocomplete-list"></div>
+              </div>
+              <div id="mychamp-chip" class="selected-chip" hidden></div>
+            </div>
+
             <div class="section-box section-box-champions">
-              <div class="section-title">📋 Équipe ennemie <span id="enemy-count" class="badge">0 / 5</span></div>
+              <div class="section-title">Équipe ennemie <span id="enemy-count" class="badge">0 / 5</span></div>
               <input type="text" id="champion-search" class="retro-search" placeholder="Rechercher un champion...">
               <div id="champion-grid" class="btn-grid"></div>
             </div>
 
             <div class="section-box section-box-augments">
-              <div class="section-title">✨ Mes augments actuels <span class="badge">(max 3)</span></div>
+              <div class="section-title">Mes augments actuels <span class="badge">(max 3)</span></div>
               <input type="text" id="augment-search" class="retro-search" placeholder="Rechercher un augment...">
               <div id="augment-grid" class="btn-grid"></div>
             </div>
@@ -62,12 +70,12 @@
           <div class="panel panel-right">
 
             <div class="section-box section-box-grow">
-              <div class="section-title">🏆 Meilleurs objets recommandés</div>
-              <ul id="item-results" class="result-list"></ul>
+              <div class="section-title">Meilleurs objets recommandés</div>
+              <div id="item-results" class="build-order"></div>
             </div>
 
             <div class="section-box section-box-grow">
-              <div class="section-title">🎲 Meilleurs augments à prendre</div>
+              <div class="section-title">Meilleurs augments à prendre</div>
               <ul id="augment-results" class="result-list"></ul>
             </div>
 
@@ -76,7 +84,7 @@
         </div>
 
         <div class="footer-note">
-          ⚠ Données de démonstration (mock) — en attente de connexion à l'API Riot Games pour stats réelles.<br>
+          Données de démonstration (mock) — en attente de connexion à l'API Riot Games pour stats réelles.<br>
           Meilleur affichage avec Internet Explorer 8 ou Firefox 3.6 — Copyright © 2010-2026
         </div>
 
@@ -89,7 +97,7 @@
     <div class="start-btn">
       <span class="orb">⊞</span> Démarrer
     </div>
-    <div class="taskbar-app active">🛡️ ARAM Mayhem Indicator.exe</div>
+    <div class="taskbar-app active">ARAM Mayhem Indicator.exe</div>
     <div class="taskbar-tray">
       <span id="taskbar-clock">00:00</span>
     </div>

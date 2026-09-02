@@ -186,44 +186,98 @@ const CHAMPIONS = [
 ];
 
 /* ddragonId = id numérique officiel de l'objet (stable entre patches),
-   utilisé pour l'URL de l'icône Data Dragon. */
+   utilisé pour l'URL de l'icône Data Dragon — chaque id a été vérifié
+   directement contre le fichier item.json de Data Dragon (patch 14.19.1)
+   pour éviter les erreurs (plusieurs corrigées ici : Force of Nature avait
+   le mauvais id, Guardian Angel/Adaptive Helm/Silvermere Dawn ont été
+   retirés car indisponibles en ARAM ou hors boutique ce patch).
+   stage = où l'objet se situe dans l'ordre de build :
+     "starter" -> objet de départ, "boots" -> bottes,
+     "core" -> objet légendaire principal (dégâts), "situational" -> objet
+     légendaire réactif/contre-comp. */
 const ITEMS = [
-  { id: "randuins",    name: "Randuin's Omen",       ddragonId: 3143, type: "armor", tags: ["tank", "anti-crit"],          baseWinrate: 51.2 },
-  { id: "thornmail",   name: "Thornmail",             ddragonId: 3075, type: "armor", tags: ["antiheal", "tank"],           baseWinrate: 52.8 },
-  { id: "fon",          name: "Force of Nature",       ddragonId: 3111, type: "mr",    tags: ["tank", "mobility"],            baseWinrate: 50.4 },
-  { id: "spiritvis",   name: "Spirit Visage",         ddragonId: 3065, type: "mr",    tags: ["healer", "tank"],              baseWinrate: 51.9 },
-  { id: "ga",           name: "Guardian Angel",        ddragonId: 3026, type: "armor", tags: ["survivability"],               baseWinrate: 50.7 },
-  { id: "maw",          name: "Maw of Malmortius",     ddragonId: 3156, type: "mr",    tags: ["ad", "shield"],                baseWinrate: 51.1 },
-  { id: "banshee",     name: "Banshee's Veil",        ddragonId: 3102, type: "mr",    tags: ["shield", "ap"],                baseWinrate: 50.9 },
-  { id: "frozenheart", name: "Frozen Heart",          ddragonId: 3110, type: "armor", tags: ["mana", "attackspeed-reduc"],  baseWinrate: 50.1 },
-  { id: "zhonya",      name: "Zhonya's Hourglass",    ddragonId: 3157, type: "armor", tags: ["ap", "burst-survival"],       baseWinrate: 52.3 },
-  { id: "merc",         name: "Mercurial Scimitar",    ddragonId: 3139, type: "mr",    tags: ["cleanse", "ad"],               baseWinrate: 51.6 },
-  { id: "sunfire",     name: "Sunfire Aegis",         ddragonId: 3068, type: "armor", tags: ["tank", "aoe"],                 baseWinrate: 52.0 },
-  { id: "warmogs",     name: "Warmog's Armor",        ddragonId: 3083, type: "hp",    tags: ["tank", "sustain"],             baseWinrate: 49.8 },
-  { id: "witsend",     name: "Wit's End",              ddragonId: 3091, type: "mr",    tags: ["attackspeed", "ad"],           baseWinrate: 50.6 },
-  { id: "adaptive",    name: "Adaptive Helm",         ddragonId: 3066, type: "mr",    tags: ["tank", "aoe-reduc"],           baseWinrate: 50.3 },
-  { id: "deadmans",    name: "Dead Man's Plate",      ddragonId: 3742, type: "armor", tags: ["mobility", "tank"],            baseWinrate: 50.5 },
-  { id: "exec",         name: "Executioner's Calling", ddragonId: 3123, type: "armor", tags: ["antiheal", "ad"],              baseWinrate: 49.5 },
-  { id: "chempunk",    name: "Chempunk Chainsword",   ddragonId: 6609, type: "armor", tags: ["antiheal", "ad"],              baseWinrate: 50.2 },
-  { id: "serpentsfang", name: "Serpent's Fang",       ddragonId: 6695, type: "armor", tags: ["anti-shield", "ad"],           baseWinrate: 49.9 },
-  { id: "kaenic",      name: "Kaenic Rookern",        ddragonId: 4401, type: "mr",    tags: ["tank", "shield"],              baseWinrate: 51.4 },
-  { id: "jaksho",      name: "Jak'Sho, The Protean",  ddragonId: 4633, type: "armor", tags: ["tank", "aoe-reduc"],           baseWinrate: 51.8 },
-  { id: "abyssal",     name: "Abyssal Mask",          ddragonId: 8020, type: "mr",    tags: ["tank", "aoe"],                 baseWinrate: 50.8 },
-  { id: "silvermere",  name: "Silvermere Dawn",       ddragonId: 6664, type: "mr",    tags: ["cleanse", "ad"],               baseWinrate: 50.9 },
-  { id: "hollowradiance", name: "Hollow Radiance",    ddragonId: 3121, type: "mr",    tags: ["tank", "antiheal", "aoe"],     baseWinrate: 51.0 },
+  /* ---- Départ ---- */
+  { id: "doransblade", name: "Doran's Blade",  ddragonId: 1055, type: "ad", stage: "starter", tags: ["marksman", "fighter", "assassin"], baseWinrate: 51.5 },
+  { id: "doransring",  name: "Doran's Ring",   ddragonId: 1056, type: "ap", stage: "starter", tags: ["mage"],                             baseWinrate: 51.2 },
+  { id: "doransshield", name: "Doran's Shield", ddragonId: 1054, type: null, stage: "starter", tags: ["tank", "sustain", "healer"],       baseWinrate: 51.8 },
+
+  /* ---- Bottes ---- */
+  { id: "berserkers",  name: "Berserker's Greaves",       ddragonId: 3006, type: "ad",    stage: "boots", tags: ["marksman", "attackspeed"], baseWinrate: 51.0 },
+  { id: "sorcerers",   name: "Sorcerer's Shoes",          ddragonId: 3020, type: "ap",    stage: "boots", tags: ["mage"],                     baseWinrate: 51.1 },
+  { id: "steelcaps",   name: "Plated Steelcaps",          ddragonId: 3047, type: "armor", stage: "boots", tags: ["tank"],                     baseWinrate: 51.3 },
+  { id: "mercurytreads", name: "Mercury's Treads",        ddragonId: 3111, type: "mr",    stage: "boots", tags: ["tank", "cleanse"],          baseWinrate: 51.4 },
+  { id: "ionianboots", name: "Ionian Boots of Lucidity",  ddragonId: 3158, type: null,    stage: "boots", tags: ["mage", "support"],          baseWinrate: 50.6 },
+  { id: "swiftness",   name: "Boots of Swiftness",        ddragonId: 3009, type: null,    stage: "boots", tags: ["mobility"],                 baseWinrate: 50.2 },
+
+  /* ---- Objets légendaires "core" (dégâts, synergie avec TON champion) ---- */
+  { id: "infinityedge", name: "Infinity Edge",        ddragonId: 3031, type: "ad", stage: "core", tags: ["marksman", "crit"],              baseWinrate: 52.4 },
+  { id: "krakenslayer", name: "Kraken Slayer",        ddragonId: 6672, type: "ad", stage: "core", tags: ["marksman", "attackspeed"],       baseWinrate: 52.0 },
+  { id: "shieldbow",    name: "Immortal Shieldbow",   ddragonId: 6673, type: "ad", stage: "core", tags: ["marksman", "sustain", "shield"], baseWinrate: 51.7 },
+  { id: "rapidfire",    name: "Rapid Firecannon",     ddragonId: 3094, type: "ad", stage: "core", tags: ["marksman", "poke"],              baseWinrate: 51.0 },
+  { id: "runaans",      name: "Runaan's Hurricane",   ddragonId: 3085, type: "ad", stage: "core", tags: ["marksman", "aoe"],               baseWinrate: 50.8 },
+  { id: "trinityforce", name: "Trinity Force",        ddragonId: 3078, type: "ad", stage: "core", tags: ["fighter", "mobility"],           baseWinrate: 51.5 },
+  { id: "eclipse",      name: "Eclipse",              ddragonId: 6692, type: "ad", stage: "core", tags: ["assassin", "burst"],             baseWinrate: 51.9 },
+  { id: "blackcleaver", name: "Black Cleaver",        ddragonId: 3071, type: "ad", stage: "core", tags: ["fighter", "aoe"],                baseWinrate: 51.6 },
+  { id: "deathsdance",  name: "Death's Dance",        ddragonId: 6333, type: "ad", stage: "core", tags: ["fighter", "sustain"],            baseWinrate: 52.1 },
+  { id: "mortalrem",    name: "Mortal Reminder",      ddragonId: 3033, type: "ad", stage: "core", tags: ["marksman", "antiheal"],          baseWinrate: 50.4 },
+  { id: "deathcap",     name: "Rabadon's Deathcap",   ddragonId: 3089, type: "ap", stage: "core", tags: ["mage", "burst"],                 baseWinrate: 52.6 },
+  { id: "liandrys",     name: "Liandry's Torment",    ddragonId: 6653, type: "ap", stage: "core", tags: ["mage", "aoe"],                   baseWinrate: 51.8 },
+  { id: "ludens",       name: "Luden's Companion",    ddragonId: 6655, type: "ap", stage: "core", tags: ["mage", "poke", "burst"],         baseWinrate: 51.3 },
+  { id: "shadowflame",  name: "Shadowflame",          ddragonId: 4645, type: "ap", stage: "core", tags: ["mage", "burst"],                 baseWinrate: 51.1 },
+  { id: "riftmaker",    name: "Riftmaker",            ddragonId: 4633, type: "ap", stage: "core", tags: ["mage", "sustain"],               baseWinrate: 51.4 },
+  { id: "nightharvester", name: "Night Harvester",    ddragonId: 4636, type: "ap", stage: "core", tags: ["mage", "burst"],                 baseWinrate: 50.7 },
+  { id: "nashors",      name: "Nashor's Tooth",       ddragonId: 3115, type: "ap", stage: "core", tags: ["mage", "attackspeed"],           baseWinrate: 50.9 },
+
+  /* ---- Objets légendaires "situationnels" (réactifs à la comp adverse) ---- */
+  { id: "randuins",    name: "Randuin's Omen",       ddragonId: 3143, type: "armor", stage: "situational", tags: ["tank", "anti-crit"],          baseWinrate: 51.2 },
+  { id: "thornmail",   name: "Thornmail",             ddragonId: 3075, type: "armor", stage: "situational", tags: ["antiheal", "tank"],           baseWinrate: 52.8 },
+  { id: "fon",          name: "Force of Nature",       ddragonId: 4401, type: "mr",    stage: "situational", tags: ["tank", "mobility"],            baseWinrate: 50.4 },
+  { id: "spiritvis",   name: "Spirit Visage",         ddragonId: 3065, type: "mr",    stage: "situational", tags: ["healer", "tank"],              baseWinrate: 51.9 },
+  { id: "maw",          name: "Maw of Malmortius",     ddragonId: 3156, type: "mr",    stage: "situational", tags: ["ad", "shield"],                baseWinrate: 51.1 },
+  { id: "banshee",     name: "Banshee's Veil",        ddragonId: 3102, type: "mr",    stage: "situational", tags: ["shield", "ap"],                baseWinrate: 50.9 },
+  { id: "frozenheart", name: "Frozen Heart",          ddragonId: 3110, type: "armor", stage: "situational", tags: ["mana", "attackspeed-reduc"],  baseWinrate: 50.1 },
+  { id: "zhonya",      name: "Zhonya's Hourglass",    ddragonId: 3157, type: "armor", stage: "situational", tags: ["ap", "burst-survival"],       baseWinrate: 52.3 },
+  { id: "merc",         name: "Mercurial Scimitar",    ddragonId: 3139, type: "mr",    stage: "situational", tags: ["cleanse", "ad"],               baseWinrate: 51.6 },
+  { id: "sunfire",     name: "Sunfire Aegis",         ddragonId: 3068, type: "armor", stage: "situational", tags: ["tank", "aoe"],                 baseWinrate: 52.0 },
+  { id: "warmogs",     name: "Warmog's Armor",        ddragonId: 3083, type: "hp",    stage: "situational", tags: ["tank", "sustain"],             baseWinrate: 49.8 },
+  { id: "witsend",     name: "Wit's End",              ddragonId: 3091, type: "mr",    stage: "situational", tags: ["attackspeed", "ad"],           baseWinrate: 50.6 },
+  { id: "deadmans",    name: "Dead Man's Plate",      ddragonId: 3742, type: "armor", stage: "situational", tags: ["mobility", "tank"],            baseWinrate: 50.5 },
+  { id: "exec",         name: "Executioner's Calling", ddragonId: 3123, type: "armor", stage: "situational", tags: ["antiheal", "ad"],              baseWinrate: 49.5 },
+  { id: "chempunk",    name: "Chempunk Chainsword",   ddragonId: 6609, type: "armor", stage: "situational", tags: ["antiheal", "ad"],              baseWinrate: 50.2 },
+  { id: "serpentsfang", name: "Serpent's Fang",       ddragonId: 6695, type: "armor", stage: "situational", tags: ["anti-shield", "ad"],           baseWinrate: 49.9 },
+  { id: "kaenic",      name: "Kaenic Rookern",        ddragonId: 2504, type: "mr",    stage: "situational", tags: ["tank", "shield"],              baseWinrate: 51.4 },
+  { id: "jaksho",      name: "Jak'Sho, The Protean",  ddragonId: 6665, type: "armor", stage: "situational", tags: ["tank", "aoe-reduc"],           baseWinrate: 51.8 },
+  { id: "abyssal",     name: "Abyssal Mask",          ddragonId: 8020, type: "mr",    stage: "situational", tags: ["tank", "aoe"],                 baseWinrate: 50.8 },
+  { id: "hollowradiance", name: "Hollow Radiance",    ddragonId: 6664, type: "mr",    stage: "situational", tags: ["tank", "antiheal", "aoe"],     baseWinrate: 51.0 },
 ];
 
+/* tier = rareté façon Arena/Mayhem : "silver" (commun), "gold" (moyen),
+   "prismatic" (rare, change la partie). Noms/effets encore fictifs pour le
+   prototype — à remplacer par le vrai pool d'augments une fois l'API
+   branchée (cf. backend/README.md, la question du pool partagé Arena/Mayhem
+   reste à vérifier avec de vraies données). */
 const AUGMENTS = [
-  { id: "cheapskate",  name: "Radin de Guerre",   desc: "Réduction du coût des objets.",              tags: ["econ"],       baseWinrate: 50.5, synergy: {} },
-  { id: "juggernaut",  name: "Juggernaut",         desc: "+HP et résistances massives.",               tags: ["tank"],       baseWinrate: 52.1, synergy: { fortification: 3.5, vampirism: 1.5 } },
-  { id: "glasscannon", name: "Canon de Verre",    desc: "+Dégâts, -résistances.",                     tags: ["ap", "burst"],baseWinrate: 51.0, synergy: { arcanebolt: 4.0, adrenaline: 1.0 } },
-  { id: "secondwind",  name: "Second Souffle",    desc: "Régénération accrue hors combat.",           tags: ["sustain"],    baseWinrate: 49.9, synergy: { vampirism: 2.0 } },
-  { id: "electrocute", name: "Surcharge",          desc: "Dégâts bonus après 3 sorts touchés.",        tags: ["burst"],      baseWinrate: 51.4, synergy: { arcanebolt: 2.5 } },
-  { id: "fortification", name: "Fortification",   desc: "+Armure et Résist. Magique.",                 tags: ["tank"],       baseWinrate: 52.6, synergy: { juggernaut: 3.5, bulwark: 2.0 } },
-  { id: "wintersblessing", name: "Bénédiction d'Hiver", desc: "Ralentit les ennemis proches.",         tags: ["cc"],         baseWinrate: 50.2, synergy: { bulwark: 1.5 } },
-  { id: "adrenaline",  name: "Adrénaline",         desc: "+Vitesse d'attaque en combat.",              tags: ["as"],         baseWinrate: 50.8, synergy: { deft: 3.0 } },
-  { id: "deft",         name: "Habileté",           desc: "+Coups critiques.",                          tags: ["crit"],       baseWinrate: 51.3, synergy: { adrenaline: 3.0 } },
-  { id: "arcanebolt",  name: "Trait Arcanique",    desc: "Les sorts appliquent une marque explosive.", tags: ["ap", "burst"],baseWinrate: 51.7, synergy: { glasscannon: 4.0, electrocute: 2.5 } },
-  { id: "bulwark",     name: "Rempart",            desc: "Bouclier périodique.",                        tags: ["shield", "tank"], baseWinrate: 50.6, synergy: { fortification: 2.0, wintersblessing: 1.5 } },
-  { id: "vampirism",   name: "Vampirisme",         desc: "+Vol de vie global.",                         tags: ["sustain"],    baseWinrate: 51.9, synergy: { juggernaut: 1.5, secondwind: 2.0 } },
+  // -- Silver --
+  { id: "cheapskate",  name: "Radin de Guerre",   desc: "Réduction du coût des objets.",              tags: ["econ"],       tier: "silver", baseWinrate: 50.5, synergy: {} },
+  { id: "secondwind",  name: "Second Souffle",    desc: "Régénération accrue hors combat.",           tags: ["sustain"],    tier: "silver", baseWinrate: 49.9, synergy: { vampirism: 2.0 } },
+  { id: "electrocute", name: "Surcharge",          desc: "Dégâts bonus après 3 sorts touchés.",        tags: ["burst"],      tier: "silver", baseWinrate: 51.4, synergy: { arcanebolt: 2.5 } },
+  { id: "wintersblessing", name: "Bénédiction d'Hiver", desc: "Ralentit les ennemis proches.",         tags: ["cc"],         tier: "silver", baseWinrate: 50.2, synergy: { bulwark: 1.5 } },
+  { id: "adrenaline",  name: "Adrénaline",         desc: "+Vitesse d'attaque en combat.",              tags: ["as"],         tier: "silver", baseWinrate: 50.8, synergy: { deft: 3.0 } },
+  { id: "deft",         name: "Habileté",           desc: "+Coups critiques.",                          tags: ["crit"],       tier: "silver", baseWinrate: 51.3, synergy: { adrenaline: 3.0 } },
+  { id: "guardian",    name: "Gardien",            desc: "Bouclier périodique sur les alliés proches.", tags: ["shield", "tank"], tier: "silver", baseWinrate: 50.3, synergy: { fortification: 1.0 } },
+  { id: "swiftfoot",   name: "Pied Léger",         desc: "+Vitesse de déplacement hors combat.",       tags: ["mobility"],   tier: "silver", baseWinrate: 50.1, synergy: {} },
+
+  // -- Gold --
+  { id: "juggernaut",  name: "Juggernaut",         desc: "+HP et résistances massives.",               tags: ["tank"],       tier: "gold", baseWinrate: 52.1, synergy: { fortification: 3.5, vampirism: 1.5 } },
+  { id: "glasscannon", name: "Canon de Verre",    desc: "+Dégâts, -résistances.",                     tags: ["ap", "burst"],tier: "gold", baseWinrate: 51.0, synergy: { arcanebolt: 4.0, adrenaline: 1.0 } },
+  { id: "fortification", name: "Fortification",   desc: "+Armure et Résist. Magique.",                 tags: ["tank"],       tier: "gold", baseWinrate: 52.6, synergy: { juggernaut: 3.5, bulwark: 2.0 } },
+  { id: "arcanebolt",  name: "Trait Arcanique",    desc: "Les sorts appliquent une marque explosive.", tags: ["ap", "burst"],tier: "gold", baseWinrate: 51.7, synergy: { glasscannon: 4.0, electrocute: 2.5 } },
+  { id: "bulwark",     name: "Rempart",            desc: "Bouclier périodique.",                        tags: ["shield", "tank"], tier: "gold", baseWinrate: 50.6, synergy: { fortification: 2.0, wintersblessing: 1.5 } },
+  { id: "vampirism",   name: "Vampirisme",         desc: "+Vol de vie global.",                         tags: ["sustain"],    tier: "gold", baseWinrate: 51.9, synergy: { juggernaut: 1.5, secondwind: 2.0 } },
+
+  // -- Prismatic --
+  { id: "titan",       name: "Titan",              desc: "+HP massif et dégâts bonus proportionnels aux PV manquants de la cible.", tags: ["tank", "burst"], tier: "prismatic", baseWinrate: 53.5, synergy: { juggernaut: 2.0 } },
+  { id: "infernal",    name: "Infernal",           desc: "Tes sorts embrasent la zone et infligent des dégâts sur la durée.",        tags: ["ap", "aoe", "burst"], tier: "prismatic", baseWinrate: 53.0, synergy: { arcanebolt: 3.0 } },
+  { id: "lastwish",    name: "Dernier Vœu",        desc: "Évite la mort une fois par combat en tombant à 1 PV avec un bouclier.",    tags: ["survivability"], tier: "prismatic", baseWinrate: 52.8, synergy: { vampirism: 1.5 } },
+  { id: "windfury",    name: "Furie du Vent",      desc: "Chaque 3e attaque frappe les ennemis proches et ne peut pas rater.",       tags: ["as", "crit"], tier: "prismatic", baseWinrate: 53.2, synergy: { deft: 3.5, adrenaline: 2.0 } },
 ];
